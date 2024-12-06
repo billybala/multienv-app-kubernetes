@@ -149,6 +149,11 @@ app.get('/api/environment', (req, res) => {
   res.json({ environment });
 });
 
+// Endpoint para obtener el estado de la instancia
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'OK' });
+});
+
 // RUTAS ADICIONALES
 const routes = require("./routes/movies.js");
 

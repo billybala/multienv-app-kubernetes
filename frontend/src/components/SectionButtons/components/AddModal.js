@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
     Button,
     Dialog,
@@ -12,10 +12,11 @@ import { Global } from '../../../helpers/Global';
 import { MoviesContext } from '../../../Context/ContextProvider';
 
 const AddModal = () => {
-    const { openModalAdd, setOpenModalAdd } = useContext(MoviesContext);
+    const { openModalAdd, setOpenModalAdd, setMoviesDB } = useContext(MoviesContext);
 
     const [newTitle, setNewTitle] = useState('');
     const [newContent, setNewContent] = useState('');
+    const [refresh, setRefresh] = useState(false);
 
     // Método que cierra el modal sin guardar nada en la base de datos
     const handleClose = () => {
@@ -47,8 +48,31 @@ const AddModal = () => {
             alert("Película agregada con éxito");
         }
 
+        setRefresh(true);
         setOpenModalAdd(false);
     }
+
+    useEffect(() => {
+        if (refresh) {
+        async function getMoviesFromDB() {
+            const request = await fetch(Global.url + "movies", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+
+            const data = await request.json();
+
+            if (data.status === "Success") {
+                setMoviesDB(data?.movies);
+            }
+        }
+        getMoviesFromDB();
+        setRefresh(false);
+    };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [refresh]);
 
     return (
         <Dialog open={openModalAdd} onClose={handleClose}>

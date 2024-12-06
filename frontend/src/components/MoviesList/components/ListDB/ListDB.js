@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { 
     Box,
     Typography,
@@ -10,7 +10,8 @@ import { MoviesContext } from '../../../../Context/ContextProvider';
 import { Global } from "../../../../helpers/Global";
 
 const ListDB = () => {
-    const { moviesDB } = useContext(MoviesContext);
+    const { moviesDB, setMoviesDB } = useContext(MoviesContext);
+    const [refresh, setRefresh] = useState(false);
 
     // Método que elimina una película de la base de datos
     const deleteMovie = async (movieId) => { 
@@ -25,9 +26,31 @@ const ListDB = () => {
         const data = await request.json();
 
         if (data.status === "Success") {
-            
+            setRefresh(true);
         }
     };
+    
+    useEffect(() => {
+        if (refresh) {
+            async function getMoviesFromDB() {
+                const request = await fetch(Global.url + "movies", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                });
+    
+                const data = await request.json();
+    
+                if (data.status === "Success") {
+                    setMoviesDB(data?.movies);
+                }
+            }
+            getMoviesFromDB();
+            setRefresh(false);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [refresh]);
 
     return (
         moviesDB?.map(movie => {

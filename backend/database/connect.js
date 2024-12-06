@@ -12,6 +12,7 @@ const connectDB = async (retries = 5, delay = 5000) => {
       console.log('Conectado a MongoDB...');
       break;
     } catch (error) {
+      console.log(`Conectando a MongoDB en ${mongoURI}...`);
       console.error(`Error al conectar a MongoDB: ${error.message}`);
       retries -= 1;
       console.log(`Reintentando en ${delay / 1000} segundos...`);

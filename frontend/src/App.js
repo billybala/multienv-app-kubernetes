@@ -5,11 +5,15 @@ import { ContextProvider } from "./Context/ContextProvider";
 import MoviesList from "./components/MoviesList/MoviesList";
 import InstanceSection from "./components/InstanceSection/InstanceSection";
 import SharedContentButtons from "./components/SharedContentButtons/SharedContentButtons";
+import HealthSection from "./components/HealthSection/HealthSection";
 
 function App() {
   return (
     <div className="App">
       <ContextProvider>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <HealthSection />
+        </div>
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           <InstanceSection />
           <SharedContentButtons />

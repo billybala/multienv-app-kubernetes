@@ -13,6 +13,7 @@ export const ContextProvider = ({ children }) => {
   const [DBConnectionState, setDBConnectionState] = useState('Disconnected');
   const [cacheConnectionState, setCacheConnectionState] = useState('Disconnected');
   const [environment, setEnvironment] = useState('');
+  const [health, setHealth] = useState("Loading...");
 
   // Retornar estados globales compartidos entre todos los componentes
   return (
@@ -32,6 +33,8 @@ export const ContextProvider = ({ children }) => {
             setCacheConnectionState,
             environment,
             setEnvironment,
+            health,
+            setHealth,
         }
     }>
       {children}
