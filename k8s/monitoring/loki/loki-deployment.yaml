@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loki-deployment
+  labels:
+    app: loki
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loki
+  template:
+    metadata:
+      labels:
+        app: loki
+    spec:
+      containers:
+        - name: loki
+          image: grafana/loki:latest
+          imagePullPolicy: IfNotPresent
+          args:
+            - "-config.file=/etc/loki/config/loki-config.yml"
+          volumeMounts:
+            - name: loki-config
+              mountPath: /etc/loki/config
+            - name: loki-data
+              mountPath: /loki
+            - name: loki-wal
+              mountPath: /wal
+          ports:
+            - containerPort: 3100
+      volumes:
+        - name: loki-config
+          configMap:
+            name: loki-config
+            items:
+              - key: loki-config.yml
+                path: loki-config.yml
+        - name: loki-data
+          emptyDir: {}
+        - name: loki-wal
+          emptyDir: {}
