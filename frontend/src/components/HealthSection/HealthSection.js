@@ -30,9 +30,14 @@ const HealthSection = () => {
       >
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'white'}}>
           <Paper elevation={3} sx={{ p: 1, maxWidth: 400, width: '100%', backgroundColor: '#333', color: 'white' }}>
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
             <Typography variant="h4" component="h1" gutterBottom align="center">
-              Status: {health}
+              <b>Status: </b>
             </Typography>
+            <Typography variant="h4" component="h1" gutterBottom align="center" color={health === 'OK' ? 'success' : 'error'}>
+              {health}
+            </Typography>
+            </div>
           </Paper>
         </Box>
       </Stack>

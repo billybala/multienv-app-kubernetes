@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const Movie = require("./models/Movie.js");
+const { v4: uuidv4 } = require('uuid');
 
 // Crear servidor node
 const app = express();
@@ -15,6 +16,9 @@ let dbConnection = true;
 // Configurar cors
 app.use(cors());
 
+// Generar el id de la instancia
+const instanceId = uuidv4();
+
 // Conexión a Redis (solo en producción)
 let redisConnection = false;
 const { redisClient, connectRedis, disconnectRedis } = require('./cache/cache.js');
@@ -27,6 +31,10 @@ if (process.env.NODE_ENV === 'production') {
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+// Endpoint para obtener el id de la instancia
+app.get('/api/instance', (req, res) => {
+  res.json({ instanceId });
+});
 
 // Endpoint para verificar el estado de la conexión a la base de datos
 app.get('/api/dbstatus', (req, res) => {

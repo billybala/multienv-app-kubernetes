@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: backend-deployment
 spec:
-  replicas: 3
   selector:
     matchLabels:
       app: backend
@@ -25,6 +24,10 @@ spec:
               value: mongodb://mongodb-service:27017/mydb
             - name: REDIS_HOST
               value: redis-service
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
           livenessProbe:
             httpGet:
               path: /api/health

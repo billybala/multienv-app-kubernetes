@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend-deployment
+  labels:
+    app: frontend
 spec:
   replicas: 3
   selector:
@@ -18,3 +20,19 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
+          volumeMounts:
+            - name: shared-storage
+              mountPath: /usr/share/nginx/html/shared
+            - name: nginx-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+      volumes:
+        - name: shared-storage
+          persistentVolumeClaim:
+            claimName: shared-pvc
+        - name: nginx-config
+          configMap:
+            name: nginx-config
+            items:
+              - key: nginx.conf
+                path: nginx.conf
