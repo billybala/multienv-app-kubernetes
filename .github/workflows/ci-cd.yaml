@@ -8,6 +8,10 @@ on:
     branches:
       - branch
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -71,24 +75,32 @@ jobs:
           # Detener el backend
           kill $!
 
-      # Paso 7: Construir y subir imagen del Frontend
+      # Paso 7: Iniciar sesión en GHCR
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Paso 8: Construir y subir imagen del Frontend
       - name: Build and Push Frontend Image
         uses: docker/build-push-action@v4
         with:
           context: ./frontend
           dockerfile: Dockerfile
           push: false
-          tags: multienv-app/frontend:latest
+          tags: https://ghcr.io/billybala/multienv-app-kubernetes/frontend:latest
 
-      # Paso 8: Construir y subir imagen del Backend
+      # Paso 9: Construir y subir imagen del Backend
       - name: Build and Push Backend Image
         uses: docker/build-push-action@v4
         with:
           context: ./backend
           dockerfile: Dockerfile
           push: false
-          tags: multienv-app/backend:latest
+          tags: https://ghcr.io/billybala/multienv-app-kubernetes/backend:latest
 
-      # Paso 9: Desplegar en Kubernetes
+      # Paso 10: Desplegar en Kubernetes
       - name: Deployment Instructions
         run: echo "Para desplegar el servicio en Kubernetes, ejecutar primero los comandos 'minikube start' y 'eval eval $(minikube -p minikube docker-env)' para levantar kubernetes y apuntar al daemon interno de Docker, luego construir las imágenes del frontend y del backend (docker buildx build -t multi-env-app/<backend o frontend>:latest -f <backend o frontend>/Dockerfile ./<backend o frontend>) y justo después aplicar cada deployment y cada service (si no se ha hecho antes) usando 'kubectl apply -f <name>-<deployment o service>.yaml'. Finalmente, abrir 4 terminales, una para levantar el frontend de la app usando 'minikube service frontend-service', otra para levantar el backend de la app usando 'kubectl port-forward svc/backend-service 8000:8000', y otras dos para acceder al dashboard de grafana y a las alertas enviadas a alertmanager usando 'minikube service grafana-service' y 'minikube service alertmanager-service' respectivamente."
