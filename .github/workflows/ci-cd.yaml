@@ -89,7 +89,7 @@ jobs:
         with:
           context: ./frontend
           dockerfile: Dockerfile
-          push: false
+          push: true
           tags: https://ghcr.io/billybala/multienv-app-kubernetes/frontend:latest
 
       # Paso 9: Construir y subir imagen del Backend
@@ -98,7 +98,7 @@ jobs:
         with:
           context: ./backend
           dockerfile: Dockerfile
-          push: false
+          push: true
           tags: https://ghcr.io/billybala/multienv-app-kubernetes/backend:latest
 
       # Paso 10: Desplegar en Kubernetes
