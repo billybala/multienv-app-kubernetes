@@ -19,7 +19,6 @@ const HealthSection = () => {
         setHealth(data.status);
     };
     getHealthStatus();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

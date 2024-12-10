@@ -54,24 +54,23 @@ const AddModal = () => {
 
     useEffect(() => {
         if (refresh) {
-        async function getMoviesFromDB() {
-            const request = await fetch(Global.url + "movies", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
+            async function getMoviesFromDB() {
+                const request = await fetch(Global.url + "movies", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                });
+
+                const data = await request.json();
+
+                if (data.status === "Success") {
+                    setMoviesDB(data?.movies);
                 }
-            });
-
-            const data = await request.json();
-
-            if (data.status === "Success") {
-                setMoviesDB(data?.movies);
             }
-        }
-        getMoviesFromDB();
-        setRefresh(false);
-    };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+            getMoviesFromDB();
+            setRefresh(false);
+        };
     }, [refresh]);
 
     return (

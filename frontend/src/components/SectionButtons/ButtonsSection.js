@@ -40,7 +40,6 @@ const ButtonsSection = () => {
             }
         };
         getMoviesFromDB();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Método que muestra el modal para añadir una película

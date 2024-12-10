@@ -20,7 +20,6 @@ const DatabaseConnectionSection = () => {
       .then(response => response.json())
       .then(data => setDBConnectionState(data.mongoStatus))
       .catch(() => setDBConnectionState('Desconectado'));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Función para manejar la conexión a la base de datos

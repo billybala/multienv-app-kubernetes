@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react';
+import PropTypes from 'prop-types';
 
 // Crear el contexto
 export const MoviesContext = createContext();
@@ -40,4 +41,8 @@ export const ContextProvider = ({ children }) => {
       {children}
     </MoviesContext.Provider>
   );
+};
+
+ContextProvider.propTypes = {
+  children: PropTypes.node,
 };

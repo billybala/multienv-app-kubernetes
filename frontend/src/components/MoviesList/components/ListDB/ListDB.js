@@ -49,7 +49,6 @@ const ListDB = () => {
             getMoviesFromDB();
             setRefresh(false);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [refresh]);
 
     return (

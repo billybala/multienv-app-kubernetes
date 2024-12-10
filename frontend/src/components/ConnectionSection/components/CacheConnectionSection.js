@@ -41,7 +41,6 @@ const CacheConnectionSection = () => {
       .then(response => response.json())
       .then(data => setCacheConnectionState(data.redisStatus))
       .catch(() => setCacheConnectionState('Desconectado'));
-      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

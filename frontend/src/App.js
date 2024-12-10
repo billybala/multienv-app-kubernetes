@@ -1,3 +1,4 @@
+import React from "react";
 import ConnectionSection from "./components/ConnectionSection/ConnectionSection";
 import './App.css';
 import ButtonsSection from "./components/SectionButtons/ButtonsSection";

@@ -15,7 +15,7 @@ const create = (req, res) => {
     catch (error) {
         return res.status(400).json({
             status: "error",
-            message: "Faltan datos por enviar"
+            message: error
         })
     }
 
@@ -35,13 +35,12 @@ const create = (req, res) => {
         return res.status(200).json({
             message: "Success",
             movie: savedMovie,
-            message: "Película creada con éxito !!!"
         });
     })
     .catch((error) => {
         return res.status(500).json({
             status: "error",
-            message: "Ha ocurrido un error"
+            message: error
         });
     });
 };
@@ -69,7 +68,7 @@ const getAll = (req, res) => {
     .catch((error) => {
         return res.status(500).json({
             status: "error",
-            message: "Ha ocurrido un error"
+            message: error
         });
     });
 };
@@ -97,7 +96,7 @@ const deleteOne = (req, res) => {
     .catch((error) => {
         return res.status(500).json({
             status: "error",
-            message: "Ha ocurrido un error"
+            message: error
         });
     });
 };
