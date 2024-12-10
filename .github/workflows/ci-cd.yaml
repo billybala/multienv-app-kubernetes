@@ -15,7 +15,7 @@ jobs:
     steps:
       # Paso 1: Clonar repositorio
       - name: Checkout Code
-      - uses: actions/checkout@v3
+        uses: actions/checkout@v3
 
       # Paso 2: Configurar Node.js para el Frontend
       - name: Set up Node.js (Frontend)
