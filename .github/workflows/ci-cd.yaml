@@ -71,19 +71,13 @@ jobs:
           # Detener el backend
           kill $!
 
-      - name: List files in frontend
-        run: ls -la ./frontend
-
-      - name: List files in backend
-        run: ls -la ./backend
-
       # Paso 7: Construir y subir imagen del Frontend
       - name: Build and Push Frontend Image
         uses: docker/build-push-action@v4
         with:
           context: ./frontend
           dockerfile: Dockerfile
-          push: true
+          push: false
           tags: multienv-app/frontend:latest
 
       # Paso 8: Construir y subir imagen del Backend
@@ -92,7 +86,7 @@ jobs:
         with:
           context: ./backend
           dockerfile: Dockerfile
-          push: true
+          push: false
           tags: multienv-app/backend:latest
 
       # Paso 9: Desplegar en Kubernetes
