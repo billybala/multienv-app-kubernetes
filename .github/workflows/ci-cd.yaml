@@ -1,0 +1,95 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - branch
+  pull_request:
+    branches:
+      - branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Paso 1: Clonar repositorio
+      - name: Checkout Code
+      - uses: actions/checkout@v3
+
+      # Paso 2: Configurar Node.js para el Frontend
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          working-directory: ./frontend
+
+      # Paso 3: Lint y formateo del Frontend
+      - name: Install dependencies Frontend
+        run: yarn install --frozen-lockfile
+        working-directory: ./frontend
+
+      - name: Lint Frontend
+        run: yarn lint
+        working-directory: ./frontend
+
+      - name: Format Frontend
+        run: yarn format
+        working-directory: ./frontend
+
+      # Paso 4: Configurar Node.js para el Backend
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          working-directory: ./backend
+
+      # Paso 5: Lint y formateo del Backend
+      - name: Install dependencies Backend
+        run: yarn install --frozen-lockfile
+        working-directory: ./backend
+
+      - name: Lint Backend
+        run: yarn lint
+        working-directory: ./backend
+
+      - name: Format Backend
+        run: yarn format
+        working-directory: ./backend
+
+      # Paso 6: Pruebas del Backend
+      - name: Run tests
+        run: |
+          # Iniciar el backend en segundo plano
+          cd backend
+          yarn start &
+
+          # Esperar a que el backend esté listo
+          sleep 20
+
+          # Verificar el endpoint de health
+          curl -f http://localhost:8000/api/health
+
+          # Detener el backend
+          kill $!
+        working-directory: ./backend
+
+      # Paso 7: Construir y subir imagen del Frontend
+      - name: Build and Push Frontend Image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./frontend
+          push: true
+          tags: multienv-app/frontend:latest
+
+      # Paso 8: Construir y subir imagen del Backend
+      - name: Build and Push Backend Image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./backend
+          push: true
+          tags: multienv-app/backend:latest
+
+      # Paso 9: Desplegar en Kubernetes
+      - name: Deployment Instructions
+        run: echo "Para desplegar el servicio en Kubernetes, ejecutar primero los comandos 'minikube start' y 'eval eval $(minikube -p minikube docker-env)' para levantar kubernetes y apuntar al daemon interno de Docker, luego construir las imágenes del frontend y del backend (docker buildx build -t multi-env-app/<backend o frontend>:latest -f <backend o frontend>/Dockerfile ./<backend o frontend>) y justo después aplicar cada deployment y cada service (si no se ha hecho antes) usando 'kubectl apply -f <name>-<deployment o service>.yaml'. Finalmente, abrir 4 terminales, una para levantar el frontend de la app usando 'minikube service frontend-service', otra para levantar el backend de la app usando 'kubectl port-forward svc/backend-service 8000:8000', y otras dos para acceder al dashboard de grafana y a las alertas enviadas a alertmanager usando 'minikube service grafana-service' y 'minikube service alertmanager-service' respectivamente."
