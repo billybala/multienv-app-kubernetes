@@ -6,11 +6,11 @@ spec:
   replicas: 3
   selector:
     matchLabels:
-      app: backend
+      app: backend-green
   template:
     metadata:
       labels:
-        app: backend
+        app: backend-green
     spec:
       containers:
         - name: backend
