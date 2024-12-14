@@ -1,20 +1,27 @@
-global:
-  smtp_smarthost: "smtp.example.com:587"
-  smtp_from: "alertmanager@example.com"
-  smtp_auth_username: "username"
-  smtp_auth_password: "password"
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+  namespace: monitoring
+data:
+  alertmanager.yml: |
+    global:
+      smtp_smarthost: "smtp.example.com:587"
+      smtp_from: "alertmanager@example.com"
+      smtp_auth_username: "username"
+      smtp_auth_password: "password"
 
-route:
-  receiver: "email-alert"
-  routes:
-    - match:
-        alertname: "GrafanaAlert"
-      receiver: "grafana-webhook"
+    route:
+      receiver: "email-alert"
+      routes:
+        - match:
+            alertname: "GrafanaAlert"
+          receiver: "grafana-webhook"
 
-receivers:
-  - name: "email-alert"
-    email_configs:
-      - to: "example@email.com"
-  - name: "grafana-webhook"
-    webhook_configs:
-      - url: "http://grafana:3000"
+    receivers:
+      - name: "email-alert"
+        email_configs:
+          - to: "example@email.com"
+      - name: "grafana-webhook"
+        webhook_configs:
+          - url: "http://grafana:3000"

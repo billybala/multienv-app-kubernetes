@@ -2,10 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: prometheus-deployment
+  namespace: monitoring
   labels:
     app: prometheus
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: prometheus
@@ -14,6 +15,8 @@ spec:
       labels:
         app: prometheus
     spec:
+      securityContext:
+        fsGroup: 65534
       containers:
         - name: prometheus
           image: prom/prometheus:latest
@@ -26,6 +29,8 @@ spec:
               mountPath: /etc/prometheus
             - name: prometheus-rules
               mountPath: /etc/prometheus/rules
+            - name: prometheus-storage
+              mountPath: /prometheus
           ports:
             - containerPort: 9090
       volumes:
@@ -37,4 +42,10 @@ spec:
                 path: prometheus.yml
         - name: prometheus-rules
           configMap:
-            name: prometheus-rules
+            name: cpu-high.rules.yml
+            items:
+              - key: cpu-high.rules.yml
+                path: cpu-high.rules.yml
+        - name: prometheus-storage
+          persistentVolumeClaim:
+            claimName: prometheus-pvc

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend-deployment-green
+  namespace: frontend
   labels:
     app: frontend-app
 spec:
@@ -20,12 +21,16 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
+          env:
+            - name: BACKEND_URL
+              value: http://backend-service.backend.svc.cluster.local:8000
           volumeMounts:
             - name: shared-storage
               mountPath: /usr/share/nginx/html/shared
             - name: nginx-config
               mountPath: /etc/nginx/nginx.conf
               subPath: nginx.conf
+
       volumes:
         - name: shared-storage
           persistentVolumeClaim:

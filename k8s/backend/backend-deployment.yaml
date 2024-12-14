@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend-deployment
+  namespace: backend
 spec:
   replicas: 3
   selector:
@@ -22,9 +23,9 @@ spec:
             - name: NODE_ENV
               value: production
             - name: MONGO_URI
-              value: mongodb://mongodb-service:27017/mydb
+              value: mongodb://mongodb-service.database.svc.cluster.local:27017/mydb
             - name: REDIS_HOST
-              value: redis-service
+              value: redis-service.cache.svc.cluster.local
             - name: POD_NAME
               valueFrom:
                 fieldRef:

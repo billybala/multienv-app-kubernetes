@@ -2,10 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: alertmanager-deployment
+  namespace: monitoring
   labels:
     app: alertmanager
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: alertmanager

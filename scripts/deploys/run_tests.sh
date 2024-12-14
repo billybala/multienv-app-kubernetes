@@ -2,7 +2,7 @@
 set -e
 
 SERVICE="backend-service"
-NAMESPACE="default"
+NAMESPACE="backend"
 
 # Parseamos argumentos
 while [[ "$#" -gt 0 ]]; do

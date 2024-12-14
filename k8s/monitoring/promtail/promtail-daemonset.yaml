@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: promtail-daemonset
+  namespace: monitoring
 spec:
   selector:
     matchLabels:
@@ -11,7 +12,7 @@ spec:
       labels:
         app: promtail
     spec:
-      serviceAccountName: default
+      serviceAccountName: promtail
       containers:
         - name: promtail
           image: grafana/promtail:latest

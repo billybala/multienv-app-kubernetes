@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cpu-high.rules.yml
+  namespace: monitoring
+data:
+  cpu-high.rules.yml: |
+    groups:
+      - name: cpu.rules
+        rules:
+          - alert: HighCpuUsage
+            expr: (sum by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) / sum by (instance) (rate(node_cpu_seconds_total[5m]))) > 0.8
+            for: 2m
+            labels:
+              severity: warning
+            annotations:
+              summary: "High CPU usage detected"
+              description: "CPU usage is above 80% for more than 2 minutes on {{ $labels.instance }}"
