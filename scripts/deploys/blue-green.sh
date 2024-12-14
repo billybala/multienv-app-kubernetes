@@ -27,8 +27,8 @@ echo "Iniciando despliegue Blue-Green..."
 
 echo "Desplegando infraestructura GREEN..."
 
-kubectl apply -f k8s/backend/backend-deployment-green.yaml -n ${BACKEND_NAMESPACE}
-kubectl apply -f k8s/frontend/frontend-deployment-green.yaml -n ${FRONTEND_NAMESPACE}
+kubectl apply -f ../../k8s/backend/backend-deployment-green.yaml -n ${BACKEND_NAMESPACE}
+kubectl apply -f ../../k8s/frontend/frontend-deployment-green.yaml -n ${FRONTEND_NAMESPACE}
 
 echo "Esperando backend GREEN..."
 kubectl rollout status deployment/${BACKEND_GREEN_DEPLOYMENT} -n ${BACKEND_NAMESPACE} --timeout=120s
@@ -53,8 +53,8 @@ if run_tests; then
     -p '{"spec":{"selector":{"app":"backend-green"}}}'
 
   echo "Eliminando infraestructura BLUE..."
-  kubectl delete -f k8s/backend/backend-deployment.yaml -n ${BACKEND_NAMESPACE} || true
-  kubectl delete -f k8s/frontend/frontend-deployment.yaml -n ${FRONTEND_NAMESPACE} || true
+  kubectl delete -f ../../k8s/backend/backend-deployment.yaml -n ${BACKEND_NAMESPACE} || true
+  kubectl delete -f ../../k8s/frontend/frontend-deployment.yaml -n ${FRONTEND_NAMESPACE} || true
 
   echo "Eliminando servicios temporales green..."
   kubectl delete svc backend-green-service -n ${BACKEND_NAMESPACE} || true

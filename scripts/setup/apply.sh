@@ -33,8 +33,6 @@ kubectl apply -f k8s/monitoring/loki/loki-service.yaml -n monitoring
 
 kubectl apply -f k8s/monitoring/prometheus/prometheus-deployment.yaml -n monitoring
 kubectl apply -f k8s/monitoring/prometheus/prometheus-service.yaml -n monitoring   
-kubectl apply -f k8s/monitoring/prometheus/prometheus-pv.yaml -n monitoring
-kubectl apply -f k8s/monitoring/prometheus/prometheus-pvc.yaml -n monitoring
 
 kubectl apply -f k8s/monitoring/promtail/promtail-daemonset.yaml -n monitoring
 
