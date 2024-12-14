@@ -58,7 +58,7 @@ El frontend se encarga de mostrar la interfaz de usuario de la aplicación y de 
 
 El directorio `images` contiene el diagrama de arquitectura de la aplicación. Este digrama es el siguiente:
 
-[![Diagrama de arquitectura](images/diagrama-arquitectura.png)] (images/diagrama-arquitectura.png)
+[![Diagrama de arquitectura](images/diagrama-arquitectura.png)](images/diagrama-arquitectura.png)
 
 ### 2.5 k8s
 
