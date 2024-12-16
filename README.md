@@ -84,7 +84,7 @@ Antes de empezar, todos los comandos que se mencionan en este apartado se deben 
 
 1. Abre una terminal y ejecuta el comando `minikube start`. Este comando inicia el servicio de Kubernetes en tu máquina.
 
-2. En esta misma terminal, ejecuta el comando `eval(minikube -p minikube docker-env)`. Este comando establece las variables de entorno necesarias para ejecutar los comandos de Docker en Minikube.
+2. En esta misma terminal, ejecuta el comando `eval $(minikube -p minikube docker-env)`. Este comando establece las variables de entorno necesarias para ejecutar los comandos de Docker en Minikube.
 
 3. En esta misma terminal, ejecuta el comando `minikube addons enable ingress`. Este comando habilita el ingress en Minikube.
 
